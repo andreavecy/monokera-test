@@ -1,14 +1,19 @@
 default: &default
   adapter: postgresql
   encoding: unicode
-  url: <%= ENV['DATABASE_URL'] %>
-  pool: 5
+  username: postgres
+  password: password123
+  host: order_db
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
 development:
   <<: *default
+  database: order_service_development
 
 test:
   <<: *default
+  database: order_service_test
 
 production:
   <<: *default
+  database: order_service_production
