@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+
+require_relative '../config/environment'
+
+puts ' [*] Waiting for customer.created events. To exit press CTRL+C'
+
+CustomerEventConsumer.start
