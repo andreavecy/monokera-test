@@ -1,0 +1,62 @@
+# Logs
+log/*
+!/log/.keep
+
+# Temporary files
+tmp/*
+!/tmp/.keep
+
+# PID
+tmp/pids/*
+!/tmp/pids/
+!/tmp/pids/.keep
+
+# cache
+tmp/cache/*
+!/tmp/cache/
+!/tmp/cache/.keep
+
+# sockets
+tmp/sockets/*
+!/tmp/sockets/
+!/tmp/sockets/.keep
+
+# Public
+/public/assets
+/public/packs
+/public/packs-test
+/public/.sass-cache
+
+# Node
+node_modules/
+
+# Yarn
+.yarn/*
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+
+# dotenv
+.env*
+.env.* 
+
+# Master key Rails
+/config/master.key
+/config/credentials.yml.enc
+
+# Docker
+*.pid
+*.pid.lock
+docker-compose.override.yml
+
+# Byebug
+.byebug_history
+
+# Postgres volumes
+customer_db_data
+order_db_data
+
+# Mac
+.DS_Store
+

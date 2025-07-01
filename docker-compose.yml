@@ -1,0 +1,70 @@
+version: '3.9'
+
+services:
+  customer_service:
+    build: ./monokera_customer_service
+    ports:
+      - "3001:3000"
+    environment:
+      DATABASE_URL: postgres://postgres:password@customer_db:5432/customer_service
+    depends_on:
+      - customer_db
+      - rabbitmq
+    volumes:
+      - ./monokera_customer_service:/rails
+    networks:
+      - monokera_net
+
+  order_service:
+    build: ./monokera_order_service
+    ports:
+      - "3002:3000"
+    environment:
+      DATABASE_URL: postgres://postgres:password@order_db:5432/order_service
+    depends_on:
+      - order_db
+      - rabbitmq
+    volumes:
+      - ./monokera_order_service:/rails
+    networks:
+      - monokera_net
+
+  customer_db:
+    image: postgres:15
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: customer_service
+    volumes:
+      - customer_db_data:/var/lib/postgresql/data
+    networks:
+      - monokera_net
+
+  order_db:
+    image: postgres:15
+    ports:
+      - "5434:5432"
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: order_service
+    volumes:
+      - order_db_data:/var/lib/postgresql/data
+    networks:
+      - monokera_net
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "15672:15672"  # Dashboard web
+      - "5672:5672"    # Puerto para apps
+    networks:
+      - monokera_net
+
+volumes:
+  customer_db_data:
+  order_db_data:
+
+networks:
+  monokera_net:
+    driver: bridge
