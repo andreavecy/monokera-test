@@ -11,7 +11,7 @@ queue = channel.queue('customer_created', durable: true)
 puts "👂 [*] Waiting for messages in customer_created. To exit press CTRL+C"
 
 queue.subscribe(block: true) do |_delivery_info, _properties, body|
-  puts "📥 Received customer: #{body}"
+  puts "Received customer: #{body}"
   begin
     data = JSON.parse(body)
 
@@ -23,9 +23,13 @@ queue.subscribe(block: true) do |_delivery_info, _properties, body|
       address: data['address']
     )
 
-    puts "✅ Customer saved: #{data['name']}"
+    puts "Customer saved: #{data['name']}"
+  rescue JSON::ParserError => e
+    puts "JSON Parse Error: #{e.message}"
+  rescue ActiveRecord::RecordInvalid => e
+    puts "Validation Error: #{e.message}"
   rescue => e
-    puts "❌ Error saving customer: #{e.message}"
+    puts "Error saving customer: #{e.message}"
     puts e.backtrace
   end
 end

@@ -11,14 +11,16 @@ queue = channel.queue('order_created', durable: true)
 puts "👂 [*] Waiting for messages in order_created. To exit press CTRL+C"
 
 queue.subscribe(block: true) do |_delivery_info, _properties, body|
-  puts "📥 Received order: #{body}"
+  puts "Received order: #{body}"
   begin
     data = JSON.parse(body)
 
-    puts "✅ Processing order ID: #{data['id']} for customer ID: #{data['customer_id']} with total #{data['total']}"
+    puts "Processing order ID: #{data['id']} for customer ID: #{data['customer_id']} with total #{data['total']}"
 
+  rescue JSON::ParserError => e
+    puts "JSON Parse Error: #{e.message}"
   rescue => e
-    puts "❌ Error processing order: #{e.message}"
+    puts "Error processing order: #{e.message}"
     puts e.backtrace
   end
 end

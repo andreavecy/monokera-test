@@ -3,17 +3,23 @@ class OrdersController < ApplicationController
 
   # GET /orders
   def index
-    @orders = Order.all
-    render json: @orders, status: :ok
+    orders = Order.all
+    render json: orders
   end
 
   # GET /orders/:id
   def show
-    render json: @order, status: :ok
+    render json: @order
   end
 
   # POST /orders
   def create
+    status_param = params.dig(:order, :status)
+
+    unless Order.statuses.keys.include?(status_param)
+      return render json: { error: "Invalid status. Allowed: #{Order.statuses.keys.join(', ')}" }, status: :unprocessable_entity
+    end
+
     order = Order.new(order_params)
 
     if order.save
@@ -23,11 +29,16 @@ class OrdersController < ApplicationController
     end
   end
 
-
   # PUT/PATCH /orders/:id
   def update
+    status_param = params.dig(:order, :status)
+
+    if status_param.present? && !Order.statuses.keys.include?(status_param)
+      return render json: { error: "Invalid status. Allowed: #{Order.statuses.keys.join(', ')}" }, status: :unprocessable_entity
+    end
+
     if @order.update(order_params)
-      render json: @order, status: :ok
+      render json: @order
     else
       render json: { errors: @order.errors.full_messages }, status: :unprocessable_entity
     end
