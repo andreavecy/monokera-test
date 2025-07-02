@@ -20,7 +20,4 @@ module Rabbitmq
       connection.close
     end
   end
-
 end
-
-

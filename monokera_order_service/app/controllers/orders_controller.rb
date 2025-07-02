@@ -14,14 +14,15 @@ class OrdersController < ApplicationController
 
   # POST /orders
   def create
-    @order = Order.new(order_params)
+    order = Order.new(order_params)
 
-    if @order.save
-      render json: @order, status: :created
+    if order.save
+      render json: order, status: :created
     else
-      render json: { errors: @order.errors.full_messages }, status: :unprocessable_entity
+      render json: order.errors, status: :unprocessable_entity
     end
   end
+
 
   # PUT/PATCH /orders/:id
   def update

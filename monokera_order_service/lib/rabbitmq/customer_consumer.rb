@@ -1,5 +1,4 @@
 require_relative '../../config/environment'
-
 require 'bunny'
 require 'json'
 

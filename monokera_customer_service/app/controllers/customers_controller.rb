@@ -14,14 +14,6 @@ class CustomersController < ApplicationController
     @customer = Customer.new(customer_params)
 
     if @customer.save
-      RabbitmqPublisher.publish('customer_created', {
-        id: @customer.id,
-        name: @customer.name,
-        email: @customer.email,
-        phone: @customer.phone,
-        address: @customer.address
-      })
-
       render json: @customer, status: :created
     else
       render json: @customer.errors, status: :unprocessable_entity
