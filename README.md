@@ -250,7 +250,7 @@ Ya incluidas en `docker-compose.yml`:
       | - Escucha: order_created   | <--- Evento | - Publica: order_created   |
       +---------------------------+              +---------------------------+
 ```
-
+![img.png](img.png)
 ---
 
 ## 🧪 ✅ Ejecución de Pruebas Automatizadas

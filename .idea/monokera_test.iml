@@ -49,6 +49,7 @@
     <orderEntry type="library" scope="PROVIDED" name="rspec-support (v3.12.1, RVM: ruby-3.0.3) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="thor (v1.3.1, RVM: ruby-3.0.3) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="tzinfo (v2.0.6, RVM: ruby-3.0.3) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="uri (v0.11.0, RVM: ruby-3.0.3) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="zeitwerk (v2.6.14, RVM: ruby-3.0.3) [gem]" level="application" />
   </component>
 </module>
