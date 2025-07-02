@@ -14,7 +14,16 @@ class Order < ApplicationRecord
 
   after_create_commit :publish_created_event
 
+  validate :validate_customer_exists
+
   private
+
+  def validate_customer_exists
+    require Rails.root.join('lib/http/customer_client')
+    customer = CustomerClient.find_customer(self.customer_id)
+    errors.add(:customer_id, "Customer does not exist") if customer.nil?
+  end
+
 
   def validate_status_enum
     unless status.in?(self.class.statuses.keys)

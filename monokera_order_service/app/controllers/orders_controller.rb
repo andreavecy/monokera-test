@@ -9,7 +9,12 @@ class OrdersController < ApplicationController
 
   # GET /orders/:id
   def show
-    render json: @order
+    require Rails.root.join('lib/http/customer_client')
+    customer = CustomerClient.find_customer(@order.customer_id)
+    render json: {
+      order: @order,
+      customer: customer
+    }
   end
 
   # POST /orders
