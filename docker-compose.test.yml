@@ -1,7 +1,9 @@
+version: '3.9'
+
 services:
   customer_service_test:
     build: ./monokera_customer_service
-    command: bash -c "RAILS_ENV=test bundle exec rails db:create db:migrate && bundle exec rspec"
+    command: ["bash", "-c", "sleep 5 && /wait-for-it.sh rabbitmq:5672 --timeout=30 --strict -- bundle exec rspec"]
     depends_on:
       - customer_db
       - rabbitmq
@@ -14,7 +16,7 @@ services:
 
   order_service_test:
     build: ./monokera_order_service
-    command: bash -c "RAILS_ENV=test bundle exec rails db:create db:migrate && bundle exec rspec"
+    command: ["bash", "-c", "sleep 5 && /wait-for-it.sh rabbitmq:5672 --timeout=30 --strict -- bundle exec rspec"]
     depends_on:
       - order_db
       - rabbitmq
@@ -24,6 +26,7 @@ services:
       - monokera_net
     environment:
       - RAILS_ENV=test
+
   customer_db:
     image: postgres:15
     environment:

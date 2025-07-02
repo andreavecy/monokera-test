@@ -9,8 +9,19 @@ class CustomersController < ApplicationController
 
   # GET /customers/:id
   def show
-    render json: @customer
+    require Rails.root.join('lib/http/order_client')
+
+    customer = Customer.find(params[:id])
+    orders_count = OrderClient.get_orders_count(customer.id)
+    p "Orders count for customer #{customer.id}: #{orders_count}"
+    render json: {
+      id: customer.id,
+      customer_name: customer.name,
+      address: customer.address,
+      orders_count: orders_count
+    }
   end
+
 
   # POST /customers
   def create

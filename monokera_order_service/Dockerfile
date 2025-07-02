@@ -21,17 +21,25 @@ RUN apt-get update -qq && \
     libgmp-dev \
     && rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
 
+# Variables de entorno
 ENV RAILS_ENV=development \
     BUNDLE_DEPLOYMENT=1 \
-    BUNDLE_PATH="/usr/local/bundle" \
+    BUNDLE_PATH="/bundle" \
     BUNDLER_VERSION=2.5.17
 
 # Instala bundler
 RUN gem install bundler -v $BUNDLER_VERSION
 
-# Copia gemas y las instala
+# Crea usuario seguro
+RUN groupadd --system --gid 1000 rails && \
+    useradd rails --uid 1000 --gid 1000 --create-home --shell /bin/bash
+
+# Crea y da permisos a la carpeta de bundle
+RUN mkdir -p $BUNDLE_PATH && chown -R rails:rails $BUNDLE_PATH
+
+# Copia Gemfile y Gemfile.lock y haz bundle install como usuario root
 COPY Gemfile Gemfile.lock ./
-RUN bundle install
+RUN bundle config set path "$BUNDLE_PATH" && bundle install
 
 # Copia la app completa
 COPY . .
@@ -39,11 +47,10 @@ COPY . .
 # Precompila bootsnap
 RUN bundle exec bootsnap precompile --gemfile app/ lib/
 
-# Agrega usuario seguro
-RUN groupadd --system --gid 1000 rails && \
-    useradd rails --uid 1000 --gid 1000 --create-home --shell /bin/bash && \
-    chown -R rails:rails /rails
+# Asigna todos los permisos a rails
+RUN chown -R rails:rails /rails
 
+# Cambia a usuario rails
 USER rails
 
 EXPOSE 3000

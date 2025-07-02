@@ -17,6 +17,14 @@ class OrdersController < ApplicationController
     }
   end
 
+  # GET /orders/count_by_customer/:customer_id
+  def count_by_customer
+    count = Order.where(customer_id: params[:customer_id]).count
+    p "Orders count for customer #{params[:customer_id]}: #{count}"
+    render json: { orders_count: count }
+  end
+
+
   # POST /orders
   def create
     status_param = params.dig(:order, :status)

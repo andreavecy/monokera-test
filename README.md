@@ -177,6 +177,46 @@ POST http://localhost:3002/orders
 
 ---
 
+## HTTP Client entre servicios
+
+El archivo `lib/http/customer_client.rb` en `order_service` consulta el `customer_service` por ID.
+
+**Uso**:
+
+```ruby
+CustomerClient.find_customer(1)
+```
+
+Este cliente HTTP se utiliza en `OrdersController#show` para mostrar información del cliente en la respuesta.
+
+---
+
+## Validaciones implementadas
+
+- No se permite crear una orden si el cliente no existe.
+- Se incluye el cliente en la respuesta del `GET /orders/:id`
+
+---
+
+## Variables de entorno
+
+Ya incluidas en `docker-compose.yml`:
+
+```yaml
+- CUSTOMER_SERVICE_URL=http://customer_service:3000
+```
+
+
+---
+
+## Observaciones
+
+- La comunicación HTTP usa el hostname del servicio Docker (`customer_service`) y no `localhost`
+- Asegúrate de ejecutar `rails db:create db:migrate` para cada servicio si hay cambios
+- Puedes ver los logs con `docker compose logs -f order_service`
+
+---
+
 ## ⚙️ Estructura RabbitMQ
 
 ✔ Publisher:  

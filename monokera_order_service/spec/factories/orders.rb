@@ -16,4 +16,5 @@ FactoryBot.define do
     price { 50.25 }
     order
   end
+
 end

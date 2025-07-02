@@ -2,7 +2,14 @@
 require 'rails_helper'
 
 RSpec.describe "Orders API", type: :request do
+  let!(:customer) { create(:customer, id: 1) }
+
   describe "POST /orders" do
+
+    before do
+      customer
+    end
+
     let(:valid_params) do
       {
         order: {
